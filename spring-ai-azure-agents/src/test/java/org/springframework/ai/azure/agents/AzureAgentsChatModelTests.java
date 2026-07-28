@@ -120,13 +120,14 @@ class AzureAgentsChatModelTests {
 			.agentName("test-agent")
 			.model("gpt-4o")
 			.build();
-		this.chatModel = new AzureAgentsChatModel(this.responsesClient, this.openAIClient,
-				this.agentReferenceManager, this.toolExecutor, defaults, ObservationRegistry.NOOP);
+		this.chatModel = new AzureAgentsChatModel(this.responsesClient, this.openAIClient, this.agentReferenceManager,
+				this.toolExecutor, defaults, ObservationRegistry.NOOP);
 	}
 
 	@Test
 	void extractLatestUserTextPrefersLastUserMessage() {
-		Prompt prompt = new Prompt(List.of(new SystemMessage("sys"), new UserMessage("first"), new UserMessage("second")));
+		Prompt prompt = new Prompt(
+				List.of(new SystemMessage("sys"), new UserMessage("first"), new UserMessage("second")));
 		assertThat(AzureAgentsChatModel.extractLatestUserText(prompt)).isEqualTo("second");
 	}
 
@@ -146,7 +147,8 @@ class AzureAgentsChatModelTests {
 
 		stubTextResponse(this.response, "resp-1", "Hello from Foundry");
 		when(this.responsesClient.createAzureResponse(any(AzureCreateResponseOptions.class),
-				any(ResponseCreateParams.Builder.class))).thenReturn(this.response);
+				any(ResponseCreateParams.Builder.class)))
+			.thenReturn(this.response);
 
 		ChatResponse chatResponse = this.chatModel.call(new Prompt("Hi"));
 		assertThat(chatResponse.getResult().getOutput().getText()).isEqualTo("Hello from Foundry");
@@ -159,12 +161,14 @@ class AzureAgentsChatModelTests {
 			.thenReturn(new AgentReference("test-agent").setVersion("1"));
 		stubTextResponse(this.response, "resp-2", "ok");
 		when(this.responsesClient.createAzureResponse(any(AzureCreateResponseOptions.class),
-				any(ResponseCreateParams.Builder.class))).thenReturn(this.response);
+				any(ResponseCreateParams.Builder.class)))
+			.thenReturn(this.response);
 
 		AzureAgentsChatOptions options = AzureAgentsChatOptions.builder().conversationId("conv-fixed").build();
 		this.chatModel.call(new Prompt(new UserMessage("ping"), options));
 
-		ArgumentCaptor<ResponseCreateParams.Builder> captor = ArgumentCaptor.forClass(ResponseCreateParams.Builder.class);
+		ArgumentCaptor<ResponseCreateParams.Builder> captor = ArgumentCaptor
+			.forClass(ResponseCreateParams.Builder.class);
 		verify(this.responsesClient).createAzureResponse(any(AzureCreateResponseOptions.class), captor.capture());
 		assertThat(captor.getValue().build().conversation()).isPresent();
 	}
@@ -183,7 +187,8 @@ class AzureAgentsChatModelTests {
 		when(this.followUpResponse.output()).thenReturn(List.of(this.messageItem));
 
 		when(this.responsesClient.createAzureResponse(any(AzureCreateResponseOptions.class),
-				any(ResponseCreateParams.Builder.class))).thenReturn(this.response, this.followUpResponse);
+				any(ResponseCreateParams.Builder.class)))
+			.thenReturn(this.response, this.followUpResponse);
 
 		when(this.toolExecutor.execute(anyList(), anyList(), anyMap())).thenReturn(List.of());
 
@@ -198,7 +203,8 @@ class AzureAgentsChatModelTests {
 		assertThat(chatResponse.getResult().getOutput().getText()).isEqualTo("Weather is fine");
 		verify(this.toolExecutor, times(1)).execute(anyList(), anyList(), anyMap());
 
-		ArgumentCaptor<ResponseCreateParams.Builder> captor = ArgumentCaptor.forClass(ResponseCreateParams.Builder.class);
+		ArgumentCaptor<ResponseCreateParams.Builder> captor = ArgumentCaptor
+			.forClass(ResponseCreateParams.Builder.class);
 		verify(this.responsesClient, times(2)).createAzureResponse(any(AzureCreateResponseOptions.class),
 				captor.capture());
 		List<ResponseCreateParams.Builder> requests = captor.getAllValues();
@@ -216,7 +222,8 @@ class AzureAgentsChatModelTests {
 		when(this.functionItem.isFunctionCall()).thenReturn(true);
 		when(this.functionItem.asFunctionCall()).thenReturn(this.functionCall);
 		when(this.responsesClient.createAzureResponse(any(AzureCreateResponseOptions.class),
-				any(ResponseCreateParams.Builder.class))).thenReturn(this.response);
+				any(ResponseCreateParams.Builder.class)))
+			.thenReturn(this.response);
 		when(this.toolExecutor.execute(anyList(), anyList(), anyMap())).thenReturn(List.of());
 
 		AzureAgentsChatOptions options = AzureAgentsChatOptions.builder()
@@ -238,7 +245,8 @@ class AzureAgentsChatModelTests {
 			.thenReturn(new AgentReference("test-agent").setVersion("1"));
 		stubTextResponse(this.response, "resp-s", "streamed");
 		when(this.responsesClient.createAzureResponse(any(AzureCreateResponseOptions.class),
-				any(ResponseCreateParams.Builder.class))).thenReturn(this.response);
+				any(ResponseCreateParams.Builder.class)))
+			.thenReturn(this.response);
 
 		StepVerifier.create(this.chatModel.stream(new Prompt("hi")))
 			.assertNext(r -> assertThat(r.getResult().getOutput().getText()).isEqualTo("streamed"))

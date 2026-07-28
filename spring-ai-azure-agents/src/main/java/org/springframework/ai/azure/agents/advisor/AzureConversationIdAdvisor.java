@@ -42,10 +42,11 @@ import reactor.core.scheduler.Schedulers;
  * Ensures each ChatClient turn is bound to a Foundry conversation id.
  * <p>
  * Resolves {@link AzureAgentsConstants#SESSION_ID} (or generates one), maps it through
- * {@link ConversationIdRepository}, creates a remote conversation when needed, and injects
- * the id into {@link AzureAgentsChatOptions} before the {@code ChatModel} runs.
+ * {@link ConversationIdRepository}, creates a remote conversation when needed, and
+ * injects the id into {@link AzureAgentsChatOptions} before the {@code ChatModel} runs.
  * <p>
- * Does <strong>not</strong> hijack model execution, unlike classic thread-polling advisors.
+ * Does <strong>not</strong> hijack model execution, unlike classic thread-polling
+ * advisors.
  *
  * @author Viquar Khan
  */
@@ -55,8 +56,7 @@ public class AzureConversationIdAdvisor implements CallAdvisor, StreamAdvisor {
 
 	private final ConversationIdRepository conversationIdRepository;
 
-	public AzureConversationIdAdvisor(OpenAIClient openAIClient,
-			ConversationIdRepository conversationIdRepository) {
+	public AzureConversationIdAdvisor(OpenAIClient openAIClient, ConversationIdRepository conversationIdRepository) {
 		Assert.notNull(openAIClient, "openAIClient must not be null");
 		Assert.notNull(conversationIdRepository, "conversationIdRepository must not be null");
 		this.openAIClient = openAIClient;
@@ -138,7 +138,8 @@ public class AzureConversationIdAdvisor implements CallAdvisor, StreamAdvisor {
 
 	@Override
 	public int getOrder() {
-		// Run after ChatMemory advisors so we can still inject conversation id just before
+		// Run after ChatMemory advisors so we can still inject conversation id just
+		// before
 		// the model; AzureAgentsChatModel only sends the latest user turn.
 		return Ordered.LOWEST_PRECEDENCE;
 	}

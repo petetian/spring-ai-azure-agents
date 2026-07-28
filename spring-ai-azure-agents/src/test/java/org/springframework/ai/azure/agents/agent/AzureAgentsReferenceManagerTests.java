@@ -71,8 +71,8 @@ class AzureAgentsReferenceManagerTests {
 
 	@Test
 	void usesConfiguredVersionWithoutCreating() {
-		AzureAgentsReferenceManager manager = new AzureAgentsReferenceManager(this.agentsClient, this.functionToolFactory,
-				"my-agent", "gpt-4o", "hi", false, List.of(), true, "v42");
+		AzureAgentsReferenceManager manager = new AzureAgentsReferenceManager(this.agentsClient,
+				this.functionToolFactory, "my-agent", "gpt-4o", "hi", false, List.of(), true, "v42");
 
 		AgentReference reference = manager.resolve(null, null, null, List.of());
 		assertThat(reference.getName()).isEqualTo("my-agent");
@@ -81,8 +81,8 @@ class AzureAgentsReferenceManagerTests {
 
 	@Test
 	void runtimeVersionOverridesConfigured() {
-		AzureAgentsReferenceManager manager = new AzureAgentsReferenceManager(this.agentsClient, this.functionToolFactory,
-				"my-agent", "gpt-4o", "hi", false, List.of(), true, "v1");
+		AzureAgentsReferenceManager manager = new AzureAgentsReferenceManager(this.agentsClient,
+				this.functionToolFactory, "my-agent", "gpt-4o", "hi", false, List.of(), true, "v1");
 
 		AgentReference reference = manager.resolve("other", "v9", null, List.of());
 		assertThat(reference.getName()).isEqualTo("other");
@@ -96,8 +96,8 @@ class AzureAgentsReferenceManagerTests {
 		when(this.agentsClient.createAgentVersion(eq("my-agent"), any(PromptAgentDefinition.class)))
 			.thenReturn(this.versionDetails);
 
-		AzureAgentsReferenceManager manager = new AzureAgentsReferenceManager(this.agentsClient, this.functionToolFactory,
-				"my-agent", "gpt-4o", "Be helpful", true, List.of("vs-1"), true, null);
+		AzureAgentsReferenceManager manager = new AzureAgentsReferenceManager(this.agentsClient,
+				this.functionToolFactory, "my-agent", "gpt-4o", "Be helpful", true, List.of("vs-1"), true, null);
 
 		ToolCallback tool = tool("t1");
 		AgentReference first = manager.resolve(null, null, null, List.of(tool));
@@ -115,11 +115,10 @@ class AzureAgentsReferenceManagerTests {
 
 	@Test
 	void failsWhenCreateDisabledAndNoVersion() {
-		AzureAgentsReferenceManager manager = new AzureAgentsReferenceManager(this.agentsClient, this.functionToolFactory,
-				"my-agent", "gpt-4o", "hi", false, List.of(), false, null);
+		AzureAgentsReferenceManager manager = new AzureAgentsReferenceManager(this.agentsClient,
+				this.functionToolFactory, "my-agent", "gpt-4o", "hi", false, List.of(), false, null);
 
-		assertThatThrownBy(() -> manager.resolve(null, null, null, List.of()))
-			.isInstanceOf(IllegalStateException.class)
+		assertThatThrownBy(() -> manager.resolve(null, null, null, List.of())).isInstanceOf(IllegalStateException.class)
 			.hasMessageContaining("create-on-demand is disabled");
 	}
 
@@ -136,8 +135,8 @@ class AzureAgentsReferenceManagerTests {
 			return this.versionDetails;
 		}).when(this.agentsClient).createAgentVersion(eq("my-agent"), any(PromptAgentDefinition.class));
 
-		AzureAgentsReferenceManager manager = new AzureAgentsReferenceManager(this.agentsClient, this.functionToolFactory,
-				"my-agent", "gpt-4o", "Be helpful", true, List.of(), true, null);
+		AzureAgentsReferenceManager manager = new AzureAgentsReferenceManager(this.agentsClient,
+				this.functionToolFactory, "my-agent", "gpt-4o", "Be helpful", true, List.of(), true, null);
 
 		ToolCallback tool = tool("t1");
 		ExecutorService executor = Executors.newFixedThreadPool(2);

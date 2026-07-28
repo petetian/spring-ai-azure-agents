@@ -104,7 +104,8 @@ public class AzureAgentsAutoConfiguration {
 	@ConditionalOnMissingBean
 	public AzureAgentsReferenceManager azureAgentsReferenceManager(AgentsClient agentsClient,
 			AzureFunctionToolFactory functionToolFactory, AzureAgentsProperties properties) {
-		if (!StringUtils.hasText(properties.getAgentVersion()) && !StringUtils.hasText(properties.getModelDeploymentName())) {
+		if (!StringUtils.hasText(properties.getAgentVersion())
+				&& !StringUtils.hasText(properties.getModelDeploymentName())) {
 			throw new IllegalStateException(
 					"Set spring.ai.azure.agents.model-deployment-name (to create agents) or spring.ai.azure.agents.agent-version (to use an existing agent).");
 		}

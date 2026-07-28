@@ -270,8 +270,8 @@ public class AzureAgentsChatOptions implements ToolCallingChatOptions {
 		options.setFrequencyPenalty(fromOptions.getFrequencyPenalty());
 		options.setMaxTokens(fromOptions.getMaxTokens());
 		options.setPresencePenalty(fromOptions.getPresencePenalty());
-		options.setStopSequences(fromOptions.getStopSequences() != null
-				? new ArrayList<>(fromOptions.getStopSequences()) : null);
+		options.setStopSequences(
+				fromOptions.getStopSequences() != null ? new ArrayList<>(fromOptions.getStopSequences()) : null);
 		options.setTemperature(fromOptions.getTemperature());
 		options.setTopK(fromOptions.getTopK());
 		options.setTopP(fromOptions.getTopP());

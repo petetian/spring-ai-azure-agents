@@ -42,7 +42,8 @@ public class AzureAgentsProperties {
 	private String endpoint;
 
 	/**
-	 * Agent name used with {@code createAgentVersion} / {@link com.azure.ai.agents.models.AgentReference}.
+	 * Agent name used with {@code createAgentVersion} /
+	 * {@link com.azure.ai.agents.models.AgentReference}.
 	 */
 	private String agentName = "spring-ai-agent";
 

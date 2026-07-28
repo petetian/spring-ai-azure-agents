@@ -105,12 +105,10 @@ public class AzureAgentsChatModel implements ChatModel {
 		Assert.notNull(prompt, "prompt must not be null");
 		AzureAgentsChatOptions options = AzureAgentsChatOptions.merge(prompt.getOptions(), this.defaultOptions);
 
-		Observation observation = Observation.createNotStarted(AzureAgentsConstants.OBSERVATION_NAME,
-				this.observationRegistry)
-			.lowCardinalityKeyValue("agent.name",
-					StringUtils.hasText(options.getAgentName()) ? options.getAgentName()
-							: this.defaultOptions.getAgentName() != null ? this.defaultOptions.getAgentName()
-									: "default");
+		Observation observation = Observation
+			.createNotStarted(AzureAgentsConstants.OBSERVATION_NAME, this.observationRegistry)
+			.lowCardinalityKeyValue("agent.name", StringUtils.hasText(options.getAgentName()) ? options.getAgentName()
+					: this.defaultOptions.getAgentName() != null ? this.defaultOptions.getAgentName() : "default");
 
 		try {
 			return observation.observe(() -> doCall(prompt, options, observation));
@@ -129,13 +127,11 @@ public class AzureAgentsChatModel implements ChatModel {
 			observation.highCardinalityKeyValue(AzureAgentsConstants.CONVERSATION_ID, conversationId);
 		}
 
-		List<ToolCallback> toolCallbacks = options.getToolCallbacks() != null ? options.getToolCallbacks()
-				: List.of();
+		List<ToolCallback> toolCallbacks = options.getToolCallbacks() != null ? options.getToolCallbacks() : List.of();
 		AgentReference agentReference = this.agentReferenceManager.resolve(options.getAgentName(),
 				options.getAgentVersion(), options.getInstructions(), toolCallbacks);
 
-		AzureCreateResponseOptions azureOptions = new AzureCreateResponseOptions()
-			.setAgentReference(agentReference);
+		AzureCreateResponseOptions azureOptions = new AzureCreateResponseOptions().setAgentReference(agentReference);
 
 		// Initial request: set conversation and input
 		ResponseCreateParams.Builder params = ResponseCreateParams.builder().input(userText);

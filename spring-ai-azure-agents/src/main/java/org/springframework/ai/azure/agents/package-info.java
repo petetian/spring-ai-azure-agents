@@ -15,7 +15,8 @@
  */
 
 /**
- * Spring AI orchestration for Microsoft Foundry Agent Service (Conversations / Responses).
+ * Spring AI orchestration for Microsoft Foundry Agent Service (Conversations /
+ * Responses).
  *
  * @author Viquar Khan
  */

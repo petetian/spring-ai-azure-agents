@@ -71,17 +71,15 @@ class AzureFunctionToolFactoryTests {
 
 	@Test
 	void invalidJsonThrows() {
-		assertThatThrownBy(() -> this.factory.toParameters("{not-json"))
-			.isInstanceOf(IllegalArgumentException.class)
+		assertThatThrownBy(() -> this.factory.toParameters("{not-json")).isInstanceOf(IllegalArgumentException.class)
 			.hasMessageContaining("Failed to parse tool input schema JSON");
 	}
 
 	@Test
 	void toFunctionToolMapsNameDescriptionAndSchema() {
-		ToolCallback callback = callback("get_weather", "Weather lookup",
-				"""
-						{"type":"object","properties":{"city":{"type":"string"}}}
-						""");
+		ToolCallback callback = callback("get_weather", "Weather lookup", """
+				{"type":"object","properties":{"city":{"type":"string"}}}
+				""");
 
 		FunctionTool tool = this.factory.toFunctionTool(callback);
 		assertThat(tool.getName()).isEqualTo("get_weather");

@@ -48,8 +48,7 @@ class InMemoryConversationIdRepositoryTests {
 
 	@Test
 	void rejectsBlankSessionOnFind() {
-		assertThatThrownBy(() -> this.repository.findConversationId(" "))
-			.isInstanceOf(IllegalArgumentException.class);
+		assertThatThrownBy(() -> this.repository.findConversationId(" ")).isInstanceOf(IllegalArgumentException.class);
 	}
 
 	@Test
