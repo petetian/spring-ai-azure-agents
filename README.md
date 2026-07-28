@@ -75,13 +75,21 @@ Pass a stable `SESSION_ID` so turns reuse the same Foundry conversation.
 
 ## Build
 
+Before committing changes, run the Spring Java formatter:
+
+```bash
+mvn spring-javaformat:apply
+```
+
 ```bash
 # Windows PowerShell: set JAVA_HOME to JDK 21 first
 mvn clean test
 mvn clean install
 ```
 
-## Run the sample
+## Run the example
+
+### Bash
 
 ```bash
 export FOUNDRY_PROJECT_ENDPOINT="https://<resource>.services.ai.azure.com/api/projects/<project>"
@@ -90,11 +98,34 @@ az login
 mvn -pl spring-ai-azure-agents-sample spring-boot:run
 ```
 
+In another terminal, send a request:
+
 ```bash
 curl -s -X POST http://localhost:8080/api/chat \
   -H "Content-Type: application/json" \
   -H "X-Session-Id: demo-1" \
   -d "{\"message\":\"What is the weather in Seattle?\"}"
+```
+
+### PowerShell
+
+```powershell
+$env:FOUNDRY_PROJECT_ENDPOINT = "https://<resource>.services.ai.azure.com/api/projects/<project>"
+$env:FOUNDRY_MODEL_NAME = "gpt-5.1"
+az login
+mvn -pl spring-ai-azure-agents-sample spring-boot:run
+```
+
+In another terminal, send a request:
+
+```powershell
+$headers = @{ "X-Session-Id" = "demo-1" }
+$body = @{ message = "What is the weather in Seattle?" } | ConvertTo-Json
+Invoke-RestMethod -Method Post `
+  -Uri "http://localhost:8080/api/chat" `
+  -Headers $headers `
+  -ContentType "application/json" `
+  -Body $body
 ```
 
 ## License
