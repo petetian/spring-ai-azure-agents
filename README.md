@@ -7,7 +7,7 @@ Spring AI `ChatModel` and Boot starter for **Microsoft Foundry Agent Service** (
 ## Requirements
 
 - JDK 21+
-- Spring Boot 3.5.x
+- Spring Boot 4.1.x
 - Spring AI 1.1.x
 - Azure CLI login or Managed Identity (`DefaultAzureCredential`)
 - Foundry project endpoint and model deployment
