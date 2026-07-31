@@ -71,7 +71,8 @@ public class AzureAgentsToolExecutor {
 					}
 				}
 				catch (Exception ex) {
-					logger.error("Tool '{}' execution failed", name, ex);
+					logger.warn("Tool '{}' execution failed: {}", name, ex.getMessage());
+					logger.debug("Tool '{}' execution failure details", name, ex);
 					output = "{\"error\":\"" + sanitize(ex.getMessage()) + "\"}";
 				}
 			}
