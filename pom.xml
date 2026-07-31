@@ -46,7 +46,7 @@
         <java.version>21</java.version>
         <maven.compiler.release>21</maven.compiler.release>
         <project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
-        <spring-boot.version>3.5.0</spring-boot.version>
+        <spring-boot.version>4.1.0</spring-boot.version>
         <spring-ai.version>1.1.2</spring-ai.version>
         <spring-javaformat.version>0.0.47</spring-javaformat.version>
         <azure-ai-agents.version>2.2.0</azure-ai-agents.version>
