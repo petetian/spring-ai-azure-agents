@@ -50,7 +50,7 @@
         <spring-ai.version>2.0.0</spring-ai.version>
         <spring-javaformat.version>0.0.47</spring-javaformat.version>
         <azure-ai-agents.version>2.2.0</azure-ai-agents.version>
-        <azure-identity.version>1.16.1</azure-identity.version>
+        <azure-identity.version>1.18.4</azure-identity.version>
         <azure-core.version>1.58.1</azure-core.version>
         <azure-core-http-netty.version>1.16.5</azure-core-http-netty.version>
         <azure-json.version>1.5.1</azure-json.version>
