@@ -17,7 +17,6 @@
 package org.springframework.ai.azure.agents;
 
 import java.util.List;
-import java.util.Set;
 
 import org.junit.jupiter.api.Test;
 import org.springframework.ai.model.tool.DefaultToolCallingChatOptions;
@@ -105,7 +104,6 @@ class AzureAgentsChatOptionsTests {
 
 		ToolCallingChatOptions runtime = DefaultToolCallingChatOptions.builder()
 			.toolCallbacks(List.of(callback))
-			.toolNames(Set.of("t1"))
 			.build();
 
 		AzureAgentsChatOptions merged = AzureAgentsChatOptions.merge(runtime,

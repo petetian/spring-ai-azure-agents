@@ -169,18 +169,15 @@ public class AzureAgentsChatOptions implements ToolCallingChatOptions {
 		return this.toolCallbacks;
 	}
 
-	@Override
 	public void setToolCallbacks(List<ToolCallback> toolCallbacks) {
 		Assert.notNull(toolCallbacks, "toolCallbacks must not be null");
 		this.toolCallbacks = new ArrayList<>(toolCallbacks);
 	}
 
-	@Override
 	public Set<String> getToolNames() {
 		return this.toolNames;
 	}
 
-	@Override
 	public void setToolNames(Set<String> toolNames) {
 		Assert.notNull(toolNames, "toolNames must not be null");
 		this.toolNames = new HashSet<>(toolNames);
@@ -191,18 +188,15 @@ public class AzureAgentsChatOptions implements ToolCallingChatOptions {
 		return this.toolContext;
 	}
 
-	@Override
 	public void setToolContext(Map<String, Object> toolContext) {
 		Assert.notNull(toolContext, "toolContext must not be null");
 		this.toolContext = new HashMap<>(toolContext);
 	}
 
-	@Override
 	public Boolean getInternalToolExecutionEnabled() {
 		return this.internalToolExecutionEnabled;
 	}
 
-	@Override
 	public void setInternalToolExecutionEnabled(Boolean internalToolExecutionEnabled) {
 		// Always false: Foundry Agent Service owns the function-call round-trip.
 		this.internalToolExecutionEnabled = false;
@@ -253,10 +247,14 @@ public class AzureAgentsChatOptions implements ToolCallingChatOptions {
 		this.maxToolRounds = maxToolRounds;
 	}
 
-	@Override
 	@SuppressWarnings("unchecked")
 	public <T extends org.springframework.ai.chat.prompt.ChatOptions> T copy() {
 		return (T) fromOptions(this);
+	}
+
+	@Override
+	public Builder mutate() {
+		return new Builder(this);
 	}
 
 	public static Builder builder() {
@@ -329,9 +327,10 @@ public class AzureAgentsChatOptions implements ToolCallingChatOptions {
 		if (runtime instanceof ToolCallingChatOptions toolOptions) {
 			if (toolOptions.getToolCallbacks() != null && !toolOptions.getToolCallbacks().isEmpty()) {
 				merged.setToolCallbacks(new ArrayList<>(toolOptions.getToolCallbacks()));
-			}
-			if (toolOptions.getToolNames() != null && !toolOptions.getToolNames().isEmpty()) {
-				merged.setToolNames(new HashSet<>(toolOptions.getToolNames()));
+				merged.setToolNames(toolOptions.getToolCallbacks()
+					.stream()
+					.map(callback -> callback.getToolDefinition().name())
+					.collect(java.util.stream.Collectors.toSet()));
 			}
 			if (toolOptions.getToolContext() != null && !toolOptions.getToolContext().isEmpty()) {
 				merged.setToolContext(new HashMap<>(toolOptions.getToolContext()));
@@ -364,9 +363,17 @@ public class AzureAgentsChatOptions implements ToolCallingChatOptions {
 				this.conversationId, this.instructions, this.maxToolRounds);
 	}
 
-	public static final class Builder implements ToolCallingChatOptions.Builder {
+	public static final class Builder implements ToolCallingChatOptions.Builder<Builder> {
 
-		private final AzureAgentsChatOptions options = new AzureAgentsChatOptions();
+		private AzureAgentsChatOptions options;
+
+		private Builder() {
+			this.options = new AzureAgentsChatOptions();
+		}
+
+		private Builder(AzureAgentsChatOptions options) {
+			this.options = AzureAgentsChatOptions.fromOptions(options);
+		}
 
 		public Builder agentName(String agentName) {
 			this.options.setAgentName(agentName);
@@ -405,13 +412,11 @@ public class AzureAgentsChatOptions implements ToolCallingChatOptions {
 			return this;
 		}
 
-		@Override
 		public Builder toolNames(Set<String> toolNames) {
 			this.options.setToolNames(toolNames);
 			return this;
 		}
 
-		@Override
 		public Builder toolNames(String... toolNames) {
 			this.options.setToolNames(new HashSet<>(Arrays.asList(toolNames)));
 			return this;
@@ -430,7 +435,6 @@ public class AzureAgentsChatOptions implements ToolCallingChatOptions {
 			return this;
 		}
 
-		@Override
 		public Builder internalToolExecutionEnabled(Boolean internalToolExecutionEnabled) {
 			this.options.setInternalToolExecutionEnabled(false);
 			return this;
@@ -481,6 +485,18 @@ public class AzureAgentsChatOptions implements ToolCallingChatOptions {
 		@Override
 		public Builder topP(@Nullable Double topP) {
 			this.options.setTopP(topP);
+			return this;
+		}
+
+		@Override
+		public Builder clone() {
+			return new Builder(this.options);
+		}
+
+		@Override
+		public Builder combineWith(org.springframework.ai.chat.prompt.ChatOptions.Builder<?> other) {
+			Assert.notNull(other, "other must not be null");
+			this.options = AzureAgentsChatOptions.merge(other.build(), this.options);
 			return this;
 		}
 
