@@ -100,3 +100,5 @@ spring-ai-azure-agents/afterfixtree
 spring-ai-azure-agents/deptree
 spring-ai-starter-model-azure-agents/afterfixtree
 spring-ai-starter-model-azure-agents/deptree
+
+*.log
