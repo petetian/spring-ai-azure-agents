@@ -48,7 +48,7 @@
         <project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
         <spring-boot.version>4.1.0</spring-boot.version>
         <spring-ai.version>2.0.0</spring-ai.version>
-        <spring-javaformat.version>0.0.47</spring-javaformat.version>
+        <spring-javaformat.version>0.0.48</spring-javaformat.version>
         <azure-ai-agents.version>2.4.0</azure-ai-agents.version>
         <azure-identity.version>1.18.4</azure-identity.version>
         <azure-core.version>1.59.0</azure-core.version>
@@ -127,7 +127,7 @@
                 <plugin>
                     <groupId>org.apache.maven.plugins</groupId>
                     <artifactId>maven-compiler-plugin</artifactId>
-                    <version>3.15.0</version>
+                    <version>3.16.0</version>
                     <configuration>
                         <release>${maven.compiler.release}</release>
                         <parameters>true</parameters>
