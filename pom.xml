@@ -49,7 +49,7 @@
         <spring-boot.version>4.1.1</spring-boot.version>
         <spring-ai.version>2.0.0</spring-ai.version>
         <spring-javaformat.version>0.0.47</spring-javaformat.version>
-        <azure-ai-agents.version>2.5.0</azure-ai-agents.version>
+        <azure-ai-agents.version>2.6.0</azure-ai-agents.version>
         <azure-identity.version>1.18.6</azure-identity.version>
         <azure-core.version>1.59.1</azure-core.version>
         <azure-core-http-netty.version>1.16.7</azure-core-http-netty.version>
